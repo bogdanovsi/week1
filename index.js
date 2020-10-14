@@ -1,8 +1,8 @@
 const { Server } = require('http');
 const fs = require('fs');
-const path = require('path');
+const urlParser = require('url');
 
-const returnFile = (url) => {
+const returnFile = (url, res) => {
     fs.readFile(`${__dirname}/${url}`, function (err,data) {
         if (err) {
           res.writeHead(404);
@@ -14,17 +14,26 @@ const returnFile = (url) => {
     });
 }
 
+const queryX = (url) => {
+    const queryObject = urlParser.parse(url,true).query;
+    return queryObject.x;
+}
+
 Server((req, res) => {
+
+    if (String(req.url).includes('mirror')) {
+        return res.end(`${queryX(req.url)}`);
+    }
+
     switch(req.url) {
         case '/v8': return res.end(`${process.versions.v8}`);
         case '/node': return res.end(`${process.version}`);
-        case '/day': return String(new Date().getDate());
-        case '/mirror': return res.end(`${req.query.x}`);
+        case '/day': return res.end(String(new Date().getDate()));
         case '/package.json': {
-            returnFile(req.url); 
+            returnFile(req.url, res); 
             break;
         }
         default: return res.end('bogdanovsi');
     }
 })
-.listen(process.env.PORT);
+.listen(process.env.PORT || 8080);
