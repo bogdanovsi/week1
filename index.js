@@ -11,7 +11,7 @@ const returnFile = (url) => {
         }
         res.writeHead(200);
         res.end(data);
-      });
+    });
 }
 
 Server((req, res) => {
@@ -19,11 +19,12 @@ Server((req, res) => {
         case '/v8': return res.end(`${process.versions.v8}`);
         case '/node': return res.end(`${process.version}`);
         case '/day': return String(new Date().getDate());
-        case '/mirror': return res.end(req.query.x);
-        case '/package.json': return returnFile(req.url);
+        case '/mirror': return res.end(`${req.query.x}`);
+        case '/package.json': {
+            returnFile(req.url); 
+            break;
+        }
         default: return res.end('bogdanovsi');
     }
-    if (req.url === '/v8') 
-    res.end('bogdanovsi');
 })
 .listen(process.env.PORT);
