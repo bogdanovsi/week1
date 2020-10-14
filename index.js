@@ -21,6 +21,8 @@ const queryX = (url) => {
 
 Server((req, res) => {
 
+    res.header("Access-Control-Allow-Origin", "*");
+
     if (String(req.url).includes('mirror')) {
         return res.end(`${queryX(req.url)}`);
     }
