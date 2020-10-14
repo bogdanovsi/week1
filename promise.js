@@ -1,0 +1,1 @@
+function task(x){return new Promise((r, j)=>{x<18?r('yes'):j('no')})}

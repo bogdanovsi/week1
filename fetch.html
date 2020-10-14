@@ -1,0 +1,18 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch</title>
+</head>
+<body>
+    <input id='inp'/>
+    <button id='bt'>g</button>
+    <script>
+        let btn = document.querySelector('#bt')
+        btn.addEventListener('click', (ev) => {
+            let inp = document.querySelector('#inp')
+            fetch(inp.value).then(res => res.text()).then(v => { inp.value = v; })
+        })
+    </script>
+</body>
+</html>
